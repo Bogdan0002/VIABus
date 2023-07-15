@@ -3,6 +3,8 @@ module com.via.viabus {
     requires javafx.fxml;
 
 
-    opens com.via.viabus to javafx.fxml;
-    exports com.via.viabus;
+    opens com.viabus to javafx.fxml;
+    exports com.viabus;
+    exports com.viabus.controllers;
+    opens com.viabus.controllers to javafx.fxml;
 }
