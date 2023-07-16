@@ -2,6 +2,7 @@ package com.viabus.controllers;
 
 import com.viabus.models.Bus;
 import com.viabus.models.BusType;
+import com.viabus.service.BusService;
 import com.viabus.viewHandlers.AddBusViewHandler;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
@@ -28,41 +29,38 @@ public class ManageBussesController {
     @FXML
     private TableColumn<Bus, Integer> capacityColumn;
     private ObservableList<Bus> busData;
+    private BusService busService;
 
 
     public ManageBussesController() {
+        busService = new BusService("files/Busses.txt");
     }
 
     @FXML
     private void handleAddButton() {
-        AddBusViewHandler viewHandler = new AddBusViewHandler();
-        viewHandler.showAddBussesWindow(this.busData);
+        AddBusViewHandler viewHandler = new AddBusViewHandler(busService);
+        viewHandler.showAddBussesWindow(busData);
     }
 
 
     @FXML
     private void initialize() {
-        // Initialize the busData list and bind it to the table view
         busData = FXCollections.observableArrayList();
         busTableView.setItems(busData);
-
-        // Set up cell value factories for the table columns
         busNumberPlateColumn.setCellValueFactory(cellData -> Bindings.createObjectBinding(() -> cellData.getValue().getNumberPlate()).asString());
         busTypeColumn.setCellValueFactory(cellData -> Bindings.createObjectBinding(() -> cellData.getValue().getBusType().toString()));
         capacityColumn.setCellValueFactory(cellData -> Bindings.createObjectBinding(() -> cellData.getValue().getSeatCapacity()));
 
-        // Load bus data from the .txt file
-        loadBusData();
+        busService.loadBusData();
+        busData.addAll(busService.getBusData());
     }
 
 
     @FXML
     private void handleDeleteButton() {
-        // Get the selected bus from the table view
         Bus selectedBus = busTableView.getSelectionModel().getSelectedItem();
 
         if (selectedBus != null) {
-            // Confirm the deletion with the user
             Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
             confirmationAlert.setTitle("Confirm Deletion");
             confirmationAlert.setHeaderText("Delete Bus");
@@ -70,11 +68,9 @@ public class ManageBussesController {
             Optional<ButtonType> result = confirmationAlert.showAndWait();
 
             if (result.isPresent() && result.get() == ButtonType.OK) {
-                // Remove the selected bus from the busData list
                 busData.remove(selectedBus);
-
-                // Save the updated bus data to the .txt file
-                saveBusData();
+                busService.deleteBus(selectedBus);
+                busService.saveBusData();
             }
         }
     }

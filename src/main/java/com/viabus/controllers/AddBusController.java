@@ -2,6 +2,7 @@ package com.viabus.controllers;
 
 import com.viabus.models.Bus;
 import com.viabus.models.BusType;
+import com.viabus.service.BusService;
 import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -26,8 +27,8 @@ public class AddBusController {
     @FXML
     private Label infoSaved;
     private ObservableList<Bus> busData;
-    private String bussesFilePath;
     private Bus bus;
+    private BusService busService;
 
     private String fileManager() {
         String folderPath = System.getProperty("user.dir") + File.separator + "files";
@@ -38,6 +39,7 @@ public class AddBusController {
 
 
     public AddBusController() {
+        busService = new BusService("files/Busses.txt");
     }
 
     @FXML
@@ -69,7 +71,7 @@ public class AddBusController {
                 }
             }
 
-            // Populate the ComboBox with bus types
+            // Populate the ComboBox with bus types from the BusType ENUM class
             busTypeComboBox.setItems(FXCollections.observableArrayList(BusType.values()));
         } catch (IOException e) {
             e.printStackTrace();
@@ -114,20 +116,12 @@ public class AddBusController {
         // Assign the newly created bus to the bus member variable
         bus = new Bus(numberPlate, capacity, busType);
         writeBusToFile();
-
-        // Add the new bus object to the busData list
         busData.add(bus);
-
-        // Clear the input fields
         clearInputFields();
 
-        // Save the updated bus data to the .txt file
+        // Show the success message
         infoSaved("Bus added successfully");
     }
-
-
-
-
 
     private void clearInputFields() {
         capacityTextField.clear();
