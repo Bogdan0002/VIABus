@@ -8,14 +8,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 
-<AnchorPane prefHeight="642.0" prefWidth="1257.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.viabus.controllers.MainWindowController">
+<AnchorPane prefHeight="642.0" prefWidth="1267.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.viabus.controllers.MainWindowController">
    <children>
       <BorderPane prefHeight="596.0" prefWidth="1051.0">
          <top>
             <Label prefHeight="72.0" prefWidth="95.0" text="VIA Bus System" BorderPane.alignment="CENTER" />
          </top>
          <bottom>
-            <TableView prefHeight="520.0" prefWidth="1038.0" BorderPane.alignment="CENTER">
+            <TableView prefHeight="516.0" prefWidth="1036.0" BorderPane.alignment="CENTER">
               <columns>
                 <TableColumn prefWidth="135.0" text="Trip ID" />
                 <TableColumn prefWidth="150.0" text="From" />
@@ -30,11 +30,11 @@
       <ButtonBar layoutY="582.0" prefHeight="40.0" prefWidth="90.0" />
       <Button layoutX="428.0" layoutY="602.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="195.0" text="Edit" />
       <Button layoutX="776.0" layoutY="602.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="195.0" text="Delete" />
-      <Button layoutX="121.0" layoutY="602.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="195.0" text="Add (create custom)" />
-      <Button layoutX="1059.0" layoutY="272.0" mnemonicParsing="false"  prefHeight="26.0" prefWidth="184.0" text="Manage Chauffeurs" />
+      <Button layoutX="121.0" layoutY="602.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="195.0" text="Create Reservation" />
+      <Button layoutX="1059.0" layoutY="272.0" mnemonicParsing="false" onAction="#handleManageChauffeursButton" prefHeight="26.0" prefWidth="184.0" text="Manage Chauffeurs" />
       <Button layoutX="1059.0" layoutY="224.0" mnemonicParsing="false" onAction="#handleManageBussesButton" prefHeight="26.0" prefWidth="184.0" text="Manage Busses" />
-      <Button layoutX="1059.0" layoutY="172.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="184.0" text="Create Reservation" />
-      <Button layoutX="1059.0" layoutY="321.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="184.0" text="Customers" />
+      <Button layoutX="1059.0" layoutY="172.0" mnemonicParsing="false"  prefHeight="26.0" prefWidth="184.0" text="Manage Trips" />
+      <Button layoutX="1059.0" layoutY="321.0" mnemonicParsing="false" onAction="#handleManageCustomersButton" prefHeight="26.0" prefWidth="184.0" text="Manage Customers" />
       <Label layoutX="1130.0" layoutY="56.0" text="LOGO" />
    </children>
 </AnchorPane>

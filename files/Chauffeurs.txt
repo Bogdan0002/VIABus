@@ -1,0 +1,4 @@
+0,Gabriela,Iachim,HANDICAP
+Bogdan,Pavliuc,SMALL
+Bogdan,Pavliuc,LARGE,true
+Bogdan,Pavliuc,SMALL,true

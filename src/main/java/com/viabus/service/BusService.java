@@ -16,6 +16,7 @@ public class BusService {
             busData = new ArrayList<>();
         }
 
+
         public List<Bus> getBusData() {
             return busData;
         }
@@ -38,7 +39,7 @@ public class BusService {
             }
         }
 
-        public void saveBusData() {
+        public  void saveBusData() {
             try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(filePath, false)))) {
                 for (Bus bus : busData) {
                     String lineToAdd = bus.getNumberPlate() + "," + bus.getBusType() + "," + bus.getSeatCapacity();
@@ -53,9 +54,12 @@ public class BusService {
             busData.add(bus);
         }
 
-        public void deleteBus(Bus bus) {
-            busData.remove(bus);
-        }
+    public void deleteBus(Bus bus) {
+        busData.remove(bus);
+        saveBusData();
+    }
+
+
 
 
     }

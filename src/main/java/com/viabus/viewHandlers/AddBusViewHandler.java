@@ -2,6 +2,7 @@ package com.viabus.viewHandlers;
 
 import com.viabus.controllers.AddBusController;
 import com.viabus.models.Bus;
+import com.viabus.service.BusService;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,13 +15,14 @@ import java.io.IOException;
 public class AddBusViewHandler {
     private AddBusController addBusController;
 
-    public void showAddBussesWindow(ObservableList<Bus> busData) {
+    public void showAddBussesWindow(ObservableList<Bus> busData, BusService busService) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/viabus/views/add_bus_view.fxml"));
             Parent root = loader.load();
 
-            addBusController = loader.getController();
+            AddBusController addBusController = loader.getController();
             addBusController.setBusData(busData);
+            addBusController.setBusService(busService);
 
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);

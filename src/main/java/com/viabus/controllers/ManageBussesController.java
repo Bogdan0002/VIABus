@@ -29,18 +29,24 @@ public class ManageBussesController {
     @FXML
     private TableColumn<Bus, Integer> capacityColumn;
     private ObservableList<Bus> busData;
-    private BusService busService;
+    private BusService busService = new BusService("files/Busses.txt");
 
-
-    public ManageBussesController() {
-        busService = new BusService("files/Busses.txt");
+    public void setBusService(BusService busService) {
+        this.busService = busService;
     }
+
 
     @FXML
     private void handleAddButton() {
-        AddBusViewHandler viewHandler = new AddBusViewHandler(busService);
-        viewHandler.showAddBussesWindow(busData);
+        if (busService == null) {
+            System.out.println("BusService is null");
+            // throw new IllegalArgumentException("busService cannot be null");
+            return;
+        }
+        AddBusViewHandler viewHandler = new AddBusViewHandler();
+        viewHandler.showAddBussesWindow(busData, busService);
     }
+
 
 
     @FXML
@@ -70,23 +76,11 @@ public class ManageBussesController {
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 busData.remove(selectedBus);
                 busService.deleteBus(selectedBus);
-                busService.saveBusData();
             }
         }
     }
 
-    private void saveBusData() {
-        //
-        String filePath = "files/Busses.txt";
-        try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(filePath, false)))) {
-            for (Bus bus : busData) {
-                String lineToAdd = bus.getNumberPlate() + "," + bus.getBusType() + "," + bus.getSeatCapacity();
-                writer.println(lineToAdd);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+
 
 
     @FXML
@@ -113,7 +107,7 @@ public class ManageBussesController {
                 busTypesStr.setLength(busTypesStr.length() - 2);
             }
 
-            dialog.setContentText("Enter new values as: Number Plate, But Type, SeatCapacity" + newLine
+            dialog.setContentText("Enter new values as: Number Plate, Bus Type, SeatCapacity" + newLine
                     + "Example: AF 85 671,HANDICAP,20" + newLine
                     + "Bus Types: " + busTypesStr);
 
@@ -121,12 +115,22 @@ public class ManageBussesController {
             result.ifPresent(busDetails -> {
                 // Parse the new values and update the selected bus
                 String[] busDetailsParts = busDetails.split(",");
-                selectedBus.setNumberPlate(busDetailsParts[0].trim());
-                selectedBus.setBusType(BusType.valueOf(busDetailsParts[1].trim().toUpperCase()));
-                selectedBus.setSeatCapacity(Integer.parseInt(busDetailsParts[2].trim()));
+                String newNumberPlate = busDetailsParts[0].trim();
+                BusType busType = BusType.valueOf(busDetailsParts[1].trim().toUpperCase());
+                int seatCapacity = Integer.parseInt(busDetailsParts[2].trim());
+
+                // Search for the bus in busData list in BusService and update it
+                for (Bus bus : busService.getBusData()) {
+                    if (bus.getNumberPlate().equals(selectedBus.getNumberPlate())) {
+                        bus.setNumberPlate(newNumberPlate);
+                        bus.setBusType(busType);
+                        bus.setSeatCapacity(seatCapacity);
+                        break;
+                    }
+                }
 
                 // Save the updated bus data to the .txt file
-                saveBusData();
+                busService.saveBusData();
                 busTableView.refresh();
             });
         }
@@ -134,23 +138,5 @@ public class ManageBussesController {
 
 
 
-
-    private void loadBusData() {
-        try {
-            Path path = Paths.get("files/Busses.txt");
-            List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
-            for (String line : lines) {
-                String[] parts = line.split(",");
-                String numberPlate = parts[0];
-                BusType busType = BusType.valueOf(parts[1]);
-                int capacity = Integer.parseInt(parts[2]);
-
-                Bus bus = new Bus(numberPlate, capacity, busType);
-                busData.add(bus);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
 }

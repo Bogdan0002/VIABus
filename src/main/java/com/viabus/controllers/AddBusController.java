@@ -39,43 +39,13 @@ public class AddBusController {
 
 
     public AddBusController() {
-        busService = new BusService("files/Busses.txt");
     }
 
     @FXML
     public void initialize() {
-        try {
-            String filePath = fileManager();
-
-            File file = new File(filePath);
-            if (!file.exists()) {
-                file.getParentFile().mkdirs(); // Create the parent folder if it doesn't exist
-                file.createNewFile(); // Create the file if it doesn't exist
-            } else {
-                // File exists, read the existing data and populate the busData list
-                busData = FXCollections.observableArrayList();
-                try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-                    String line;
-                    while ((line = br.readLine()) != null) {
-                        String[] parts = line.split(",");
-                        if (parts.length == 3) {
-                            String numberPlate = String.valueOf(parts[0]);
-                            BusType busType = BusType.valueOf(parts[1]);
-                            int seatCapacity = Integer.parseInt(parts[2]);
-                            Bus bus = new Bus(numberPlate, seatCapacity, busType);
-                            busData.add(bus);
-                        }
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            // Populate the ComboBox with bus types from the BusType ENUM class
-            busTypeComboBox.setItems(FXCollections.observableArrayList(BusType.values()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        System.out.println("Initializing AddBusController...");
+        this.busService = new BusService("files/Busses.txt");
+        busTypeComboBox.setItems(FXCollections.observableArrayList(BusType.values()));
     }
 
 
@@ -85,43 +55,45 @@ public class AddBusController {
 
     @FXML
     private void handleAddBusButton() {
-        // Get the input values from the text fields
-        BusType busType = busTypeComboBox.getValue();
-        String capacityText = capacityTextField.getText().trim();
-        String numberPlate = numberPlateTextField.getText().trim();
-
-        // Validate the input
-        if (busType == null || capacityText.isEmpty()) {
-            showError("Invalid capacity");
-            return;
-        }
-
-        else if (numberPlate == null || capacityText.isEmpty()) {
-            showError("Invalid number plate");
-            return;
-        }
-
-        int capacity;
         try {
-            capacity = Integer.parseInt(capacityText);
-            if (capacity <= 0) {
-                showError("Invalid type");
+            // Get the input values from the text fields
+            BusType busType = busTypeComboBox.getValue();
+            String capacityText = capacityTextField.getText().trim();
+            String numberPlate = numberPlateTextField.getText().trim();
+
+            // Validate the input
+            if (busType == null || capacityText.isEmpty()) {
+                showError("Invalid capacity");
+                return;
+            } else if (numberPlate == null || capacityText.isEmpty()) {
+                showError("Invalid number plate");
                 return;
             }
-        } catch (NumberFormatException e) {
-            showError("Invalid Input");
-            return;
+
+            int capacity;
+            try {
+                capacity = Integer.parseInt(capacityText);
+                if (capacity <= 0) {
+                    showError("Invalid type");
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                showError("Invalid Input");
+                return;
+            }
+
+            Bus bus = new Bus(numberPlate, capacity, busType);
+            busService.addBus(bus);
+            busData.add(bus);
+            clearInputFields();
+            infoSaved("Bus added successfully");
+            writeBusToFile(bus); // Pass the 'bus' to 'writeBusToFile' method
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        // Assign the newly created bus to the bus member variable
-        bus = new Bus(numberPlate, capacity, busType);
-        writeBusToFile();
-        busData.add(bus);
-        clearInputFields();
-
-        // Show the success message
-        infoSaved("Bus added successfully");
     }
+
+
 
     private void clearInputFields() {
         capacityTextField.clear();
@@ -129,12 +101,12 @@ public class AddBusController {
         busTypeComboBox.setValue(null);
     }
 
-    private void writeBusToFile() {
+    private void writeBusToFile(Bus bus) {
         String filePath = fileManager();
         System.out.println(filePath);
         try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(filePath, true)))) {
-                String lineToAdd = bus.getNumberPlate() + "," + bus.getBusType() + "," + bus.getSeatCapacity();
-                writer.println(lineToAdd);
+            String lineToAdd = bus.getNumberPlate() + "," + bus.getBusType() + "," + bus.getSeatCapacity();
+            writer.println(lineToAdd);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -162,5 +134,10 @@ public class AddBusController {
             infoSaved.setVisible(false);
         });
         delay.play();
+    }
+
+    public void setBusService(BusService busService) {
+        System.out.println("Setting busService..." + busService);
+        this.busService = busService;
     }
 }
