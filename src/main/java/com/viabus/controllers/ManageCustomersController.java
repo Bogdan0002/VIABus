@@ -1,13 +1,20 @@
 package com.viabus.controllers;
 
+import com.viabus.models.BusType;
+import com.viabus.models.Chauffeur;
 import com.viabus.models.Customer;
+import com.viabus.service.ChauffeurService;
 import com.viabus.service.CustomerService;
 import com.viabus.viewHandlers.AddCustomerViewHandler;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
+import javafx.util.Pair;
 
 import java.util.Optional;
 
@@ -23,7 +30,7 @@ public class ManageCustomersController {
     @FXML
     private TableColumn<Customer, String> customerPhoneColumn;
     @FXML
-    private TableColumn<Customer, String> customerIdColumn;
+    private TableColumn<Customer, Integer> customerIdColumn;
     private ObservableList<Customer> customerData;
     private CustomerService customerService = new CustomerService("files/Customers.txt");
 
@@ -38,6 +45,10 @@ public class ManageCustomersController {
         viewHandler.showAddCustomerWindow(customerData, customerService);
     }
 
+    public void setCustomerService(CustomerService customerService) {
+        this.customerService = customerService;
+    }
+
     @FXML
     private void initialize(){
         customerData = FXCollections.observableArrayList();
@@ -46,7 +57,7 @@ public class ManageCustomersController {
         customerLastNameColumn.setCellValueFactory(cellData -> Bindings.createObjectBinding(() -> cellData.getValue().getLastName()).asString());
         customerEmailColumn.setCellValueFactory(cellData -> Bindings.createObjectBinding(() -> cellData.getValue().getEmail()).asString());
         customerPhoneColumn.setCellValueFactory(cellData -> Bindings.createObjectBinding(() -> cellData.getValue().getPhoneNumber()).asString());
-        customerIdColumn.setCellValueFactory(cellData -> Bindings.createObjectBinding(() -> cellData.getValue().getId()).asString());
+        customerIdColumn.setCellValueFactory(cellData -> Bindings.createObjectBinding(() -> cellData.getValue().getId()));
 
         customerService.loadCustomerData();
         customerData.addAll(customerService.getCustomerData());
@@ -65,47 +76,90 @@ public class ManageCustomersController {
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 customerData.remove(selectedCustomer);
-                customerService.deleteCustomer(selectedCustomer);
+                customerService.deleteCustomer(selectedCustomer, customerData);
             }
         }
     }
 
     @FXML
     private void handleEditCustomerButton(){
-        String newLine = System.getProperty("line.separator");
-
+        // Get the selected customer from the table view
         Customer selectedCustomer = customerTableView.getSelectionModel().getSelectedItem();
 
-        if(selectedCustomer != null) {
-            TextInputDialog dialog = new TextInputDialog();
+        if (selectedCustomer != null) {
+            // Create the custom dialog.
+            Dialog<Pair<String, String>> dialog = new Dialog<>();
             dialog.setTitle("Edit Customer");
-            dialog.setHeaderText("Edit Customer");
-            dialog.setContentText("Enter new customer information below:" + newLine + newLine +
-                    "First Name: " + newLine +
-                    "Last Name: " + newLine +
-                    "Email: " + newLine +
-                    "Phone Number: ");
 
-            Optional<String> result = dialog.showAndWait();
-            if (result.isPresent()) {
-                String[] customerInfo = result.get().split(newLine);
-                if (customerInfo.length == 4) {
-                    selectedCustomer.setFirstName(customerInfo[0].trim());
-                    selectedCustomer.setLastName(customerInfo[1].trim());
-                    selectedCustomer.setEmail(customerInfo[2].trim());
-                    selectedCustomer.setPhoneNumber(customerInfo[3].trim());
-                    customerService.saveCustomerData();
-                    customerTableView.refresh();
-                } else {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error");
-                    alert.setHeaderText("Invalid Input");
-                    alert.setContentText("Please enter the customer information in the correct format.");
-                    alert.showAndWait();
+            // Set the button types.
+            ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
+            dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
+
+            // Create the fields and labels and add them to a grid pane.
+            GridPane grid = new GridPane();
+            grid.setHgap(10);
+            grid.setVgap(10);
+            grid.setPadding(new Insets(20, 150, 10, 10));
+
+            TextField firstName = new TextField();
+            firstName.setText(selectedCustomer.getFirstName());
+            TextField lastName = new TextField();
+            lastName.setText(selectedCustomer.getLastName());
+            TextField email = new TextField();
+            email.setText(selectedCustomer.getEmail());
+            TextField phoneNumber = new TextField();
+            phoneNumber.setText(selectedCustomer.getPhoneNumber());
+
+            grid.add(new Label("First Name:"), 0, 0);
+            grid.add(firstName, 1, 0);
+            grid.add(new Label("Last Name:"), 0, 1);
+            grid.add(lastName, 1, 1);
+            grid.add(new Label("Email:"), 0, 2);
+            grid.add(email, 1, 2);
+            grid.add(new Label("Phone:"), 0, 3);
+            grid.add(phoneNumber, 1, 3);
+
+            dialog.getDialogPane().setContent(grid);
+
+            // Enable/Disable save button depending on whether fields are empty.
+            Node saveButton = dialog.getDialogPane().lookupButton(saveButtonType);
+            saveButton.setDisable(true);
+
+            // Logic to enable save button only when fields are not empty
+            firstName.textProperty().addListener((observable, oldValue, newValue) -> saveButton.setDisable(newValue.trim().isEmpty()));
+            lastName.textProperty().addListener((observable, oldValue, newValue) -> saveButton.setDisable(newValue.trim().isEmpty()));
+            email.textProperty().addListener((observable, oldValue, newValue) -> saveButton.setDisable(newValue.trim().isEmpty()));
+            phoneNumber.textProperty().addListener((observable, oldValue, newValue) -> saveButton.setDisable(newValue.trim().isEmpty()));
+
+            // Handle save button action.
+            dialog.setResultConverter(dialogButton -> {
+                if (dialogButton == saveButtonType) {
+                    return new Pair<>(firstName.getText(), lastName.getText());
                 }
-            }
+                return null;
+            });
 
+            Optional<Pair<String, String>> result = dialog.showAndWait();
+
+            result.ifPresent(data -> {
+                // Get the new data and update customer.
+                String newFirstName = data.getKey();
+                String newLastName = data.getValue();
+                String newEmail = email.getText();
+                String newPhoneNumber = phoneNumber.getText();
+
+                selectedCustomer.setFirstName(newFirstName);
+                selectedCustomer.setLastName(newLastName);
+                selectedCustomer.setEmail(newEmail);
+                selectedCustomer.setPhoneNumber(newPhoneNumber);
+
+                customerService.updateCustomerData(customerData);
+
+                customerService.saveCustomerData();
+                customerTableView.refresh();
+            });
         }
     }
+
 
 }

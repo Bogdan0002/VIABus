@@ -13,13 +13,20 @@ public class Chauffeur {
     private static int nextId = 0;
 
 
-    public Chauffeur(String firstName, String lastName, BusType chauffeurPreference) {
+    public Chauffeur(int id, String firstName, String lastName, BusType chauffeurPreference, boolean availability) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.id = nextId++;
+        this.id = id;
         this.chauffeurPreference = chauffeurPreference;
         this.availability = true;
         this.chauffeurs = new ArrayList();
+
+        if (id >= nextId) {
+            nextId = id + 1;
+        }
+    }
+    public Chauffeur(String firstName, String lastName, BusType chauffeurPreference, boolean availability) {
+        this(nextId, firstName, lastName, chauffeurPreference, availability);
     }
 
     public String getFirstName() {

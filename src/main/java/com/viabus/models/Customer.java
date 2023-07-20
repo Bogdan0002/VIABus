@@ -8,16 +8,24 @@ public class Customer {
     private int id;
     private String email;
     private String phoneNumber;
-    private static int nextId = 0;
+    private static int nextId = 1000;
     private ArrayList<Customer> customers;
 
-public Customer(String firstName, String lastName, String email, String phoneNumber) {
+public Customer(int id, String firstName, String lastName, String email, String phoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.id = nextId++;
+        this.id = id;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.customers = new ArrayList();
+
+    if (id >= nextId) {
+        nextId = id + 1;
+        }
+    }
+
+    public Customer(String firstName, String lastName, String email, String phoneNumber) {
+        this(nextId, firstName, lastName, email, phoneNumber);
     }
 
 

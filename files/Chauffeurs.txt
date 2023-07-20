@@ -1,4 +1,3 @@
-0,Gabriela,Iachim,HANDICAP
-Bogdan,Pavliuc,SMALL
-Bogdan,Pavliuc,LARGE,true
-Bogdan,Pavliuc,SMALL,true
+0,Ion,Postolache,SMALL,true
+1,Gabriel,Ionut,LARGE,true
+3,Gabrielaaaaa,Iac,LARGE,true

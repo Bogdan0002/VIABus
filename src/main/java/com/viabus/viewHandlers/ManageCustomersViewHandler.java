@@ -1,5 +1,7 @@
 package com.viabus.viewHandlers;
 
+import com.viabus.controllers.ManageBussesController;
+import com.viabus.controllers.ManageCustomersController;
 import com.viabus.service.CustomerService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +22,9 @@ public class ManageCustomersViewHandler {
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/viabus/views/manage_customers_view.fxml"));
             Parent root = loader.load();
+
+            ManageCustomersController controller = loader.getController();
+            controller.setCustomerService(customerService);
 
             Stage stage = new Stage();
             stage.setTitle("Manage Customers");

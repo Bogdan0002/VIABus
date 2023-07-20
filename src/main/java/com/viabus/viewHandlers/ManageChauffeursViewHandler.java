@@ -1,5 +1,6 @@
 package com.viabus.viewHandlers;
 
+import com.viabus.controllers.ManageChauffeursController;
 import com.viabus.service.ChauffeurService;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,6 +20,9 @@ public class ManageChauffeursViewHandler {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/viabus/views/manage_chauffeurs_view.fxml"));
             Parent root = loader.load();
+
+            ManageChauffeursController controller = loader.getController();
+            controller.setChauffeurService(chauffeurService);
 
             Stage stage = new Stage();
             stage.setTitle("Manage Chauffeurs");

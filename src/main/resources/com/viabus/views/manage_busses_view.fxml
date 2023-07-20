@@ -12,7 +12,7 @@
             <TableColumn fx:id="busNumberPlateColumn" prefWidth="150.0" text="Number Plates " />
             <TableColumn fx:id="busTypeColumn" minWidth="0.0" prefWidth="150.0" text="Bus Type" />
             <TableColumn fx:id="capacityColumn" minWidth="0.0" prefWidth="150.0" text="Seat Capacity" />
-            <TableColumn prefWidth="150.0" text="Availability" />
+            <TableColumn fx:id="busAvailabilityColumn" prefWidth="150.0" text="Availability" />
          </columns>
       </TableView>
       <Button layoutX="72.0" layoutY="360.0" mnemonicParsing="false" onAction="#handleAddButton" prefHeight="26.0" prefWidth="105.0" text="Add Bus" />

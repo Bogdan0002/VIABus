@@ -2,6 +2,7 @@ package com.viabus.service;
 
 import com.viabus.models.BusType;
 import com.viabus.models.Chauffeur;
+import javafx.collections.ObservableList;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -24,8 +25,8 @@ public class ChauffeurService {
         chauffeurData.add(chauffeur);
     }
 
-    public void deleteChauffeur(Chauffeur chauffeur) {
-        chauffeurData.remove(chauffeur);
+    public void deleteChauffeur(Chauffeur chauffeur, ObservableList<Chauffeur> updatedChauffeurData) {
+        chauffeurData = new ArrayList<>(updatedChauffeurData);
         saveChauffeurData();
 
     }
@@ -53,7 +54,7 @@ public class ChauffeurService {
                     String lastName = String.valueOf(parts[2]);
                     BusType chauffeurPreference = BusType.valueOf(parts[3]);
                     boolean availability = Boolean.parseBoolean(parts[4]);
-                    Chauffeur chauffeur = new Chauffeur(firstName, lastName, chauffeurPreference);
+                    Chauffeur chauffeur = new Chauffeur(id, firstName, lastName, chauffeurPreference, availability);
                     chauffeur.setAvailability(availability);
                     chauffeurData.add(chauffeur);
                 }
@@ -62,6 +63,11 @@ public class ChauffeurService {
             e.printStackTrace();
         }
     }
+
+    public void updateChauffeurData(ObservableList<Chauffeur> updatedChauffeurData) {
+        this.chauffeurData = new ArrayList<>(updatedChauffeurData);
+    }
+
 
 
     public void updateChauffeurAvailability(int chauffeurId, boolean isAvailable) {

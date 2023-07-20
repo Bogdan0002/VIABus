@@ -3,6 +3,7 @@ package com.viabus.service;
 import com.viabus.models.BusType;
 import com.viabus.models.Chauffeur;
 import com.viabus.models.Customer;
+import javafx.collections.ObservableList;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ public class CustomerService {
 
     public CustomerService(String filePath) {
         this.filePath = filePath;
-        this.customerData = new ArrayList<>();
+        customerData = new ArrayList<>();
     }
 
     public void addCustomer(Customer customer) {
@@ -25,19 +26,17 @@ public class CustomerService {
         return customerData;
     }
 
-    public void deleteCustomer(Customer customer) {
-        customerData.remove(customer);
+    public void deleteCustomer(Customer customer, ObservableList<Customer> updatedCustomerData) {
+        customerData = new ArrayList<>(updatedCustomerData);
         saveCustomerData();
     }
 
     public void saveCustomerData() {
-        try {
-            PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(filePath, false)));
+        try { PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(filePath, false)));
             for (Customer customer : customerData) {
                 String lineToAdd = customer.getId() + "," + customer.getFirstName() + "," + customer.getLastName() + "," + customer.getEmail() + "," + customer.getPhoneNumber();
                 writer.println(lineToAdd);
             }
-            writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -54,7 +53,7 @@ public class CustomerService {
                     String lastName = String.valueOf(parts[2]);
                     String email = String.valueOf(parts[3]);
                     String phoneNumber = String.valueOf(parts[4]);
-                    Customer customer = new Customer(firstName, lastName, email, phoneNumber);
+                    Customer customer = new Customer(id, firstName, lastName, email, phoneNumber);
                     customerData.add(customer);
                 }
             }
@@ -63,6 +62,9 @@ public class CustomerService {
         }
     }
 
+    public void updateCustomerData(ObservableList<Customer> updatedCustomerData){
+        this.customerData = new ArrayList<>(updatedCustomerData);
+    }
 
 
 }

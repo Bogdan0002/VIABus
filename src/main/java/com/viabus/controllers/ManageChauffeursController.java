@@ -8,7 +8,11 @@ import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
+import javafx.util.Pair;
 
 import java.util.Optional;
 
@@ -73,65 +77,101 @@ public class ManageChauffeursController {
 
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 chauffeurData.remove(selectedChauffeur);
-                chauffeurService.deleteChauffeur(selectedChauffeur);
+                chauffeurService.deleteChauffeur(selectedChauffeur, chauffeurData);
             }
         }
     }
 
     @FXML
     private void handleEditChauffeurButton(){
-        String newLine =System.getProperty("line.separator");
         // Get the selected chauffeur from the table view
         Chauffeur selectedChauffeur = chauffeurTableView.getSelectionModel().getSelectedItem();
 
         if (selectedChauffeur != null) {
-            // Open a dialog to edit the chauffeur
-            TextInputDialog dialog = new TextInputDialog();
+            // Create the custom dialog.
+            Dialog<Pair<String, String>> dialog = new Dialog<>();
             dialog.setTitle("Edit Chauffeur");
-            dialog.setHeaderText("Edit the Chauffeur details");
 
-            // Get all bus types (they become the chauffeur preferences)
-            BusType[] busTypes = BusType.values();
-            StringBuilder busTypesStr = new StringBuilder();
-            for (BusType busType : busTypes) {
-                busTypesStr.append(busType.name()).append(", ");
-            }
-            // Remove the last comma and space
-            if (busTypesStr.length() > 0) {
-                busTypesStr.setLength(busTypesStr.length() - 2);
-            }
+            // Set the button types.
+            ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
+            dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
 
-            dialog.setContentText("Enter new values as: First Name, Last Name, Chauffeur Preference" + newLine
-                    + "Example: John, Doe, HANDICAP" + newLine
-                    + "Bus Types (Chauffeur Preferences): " + busTypesStr);
+            // Create the fields and labels and add them to a grid pane.
+            GridPane grid = new GridPane();
+            grid.setHgap(10);
+            grid.setVgap(10);
+            grid.setPadding(new Insets(20, 150, 10, 10));
 
-            Optional<String> result = dialog.showAndWait();
-            result.ifPresent(chauffeurDetails -> {
-                // Parse the new values and update the selected chauffeur
-                String[] chauffeurDetailsParts = chauffeurDetails.split(",");
-                String newFirstName = chauffeurDetailsParts[0].trim();
-                String newLastName = chauffeurDetailsParts[1].trim();
-                BusType chauffeurPreference = BusType.valueOf(chauffeurDetailsParts[2].trim().toUpperCase());
+            TextField firstName = new TextField();
+            firstName.setText(selectedChauffeur.getFirstName());
+            TextField lastName = new TextField();
+            lastName.setText(selectedChauffeur.getLastName());
+            ComboBox<BusType> preference = new ComboBox<>();
+            preference.getItems().setAll(BusType.values());
+            preference.setValue(selectedChauffeur.getChauffeurPreference());
+            CheckBox available = new CheckBox("Available");
+            available.setSelected(selectedChauffeur.getAvailability());
 
-                // Search for the chauffeur in chauffeurData list in ChauffeurService and update it
-                for (Chauffeur chauffeur : chauffeurService.getChauffeurData()) {
-                    if (chauffeur.getId() == selectedChauffeur.getId()) {
-                        chauffeur.setFirstName(newFirstName);
-                        chauffeur.setLastName(newLastName);
-                        chauffeur.setChauffeurPreference(chauffeurPreference);
-                        break;
-                    }
+            grid.add(new Label("First Name:"), 0, 0);
+            grid.add(firstName, 1, 0);
+            grid.add(new Label("Last Name:"), 0, 1);
+            grid.add(lastName, 1, 1);
+            grid.add(new Label("Chauffeur Preference:"), 0, 2);
+            grid.add(preference, 1, 2);
+            grid.add(available, 1, 3);
+
+            dialog.getDialogPane().setContent(grid);
+
+            // Enable/Disable save button depending on whether fields are empty.
+            Node saveButton = dialog.getDialogPane().lookupButton(saveButtonType);
+            saveButton.setDisable(true);
+
+            // Logic to enable save button only when fields are not empty
+            firstName.textProperty().addListener((observable, oldValue, newValue) -> {
+                saveButton.setDisable(newValue.trim().isEmpty());
+            });
+
+            lastName.textProperty().addListener((observable, oldValue, newValue) -> {
+                ((Node) saveButton).setDisable(newValue.trim().isEmpty());
+            });
+
+            // Handle save button action.
+            dialog.setResultConverter(dialogButton -> {
+                if (dialogButton == saveButtonType) {
+                    return new Pair<>(firstName.getText(), lastName.getText());
                 }
+                return null;
+            });
 
-                // Save the updated chauffeur data to the .txt file
+            Optional<Pair<String, String>> result = dialog.showAndWait();
+
+            result.ifPresent(data -> {
+                // Get the new data and update chauffeur.
+                String newFirstName = data.getKey();
+                String newLastName = data.getValue();
+                BusType newPreference = preference.getValue();
+                boolean newAvailability = available.isSelected();
+
+                selectedChauffeur.setFirstName(newFirstName);
+                selectedChauffeur.setLastName(newLastName);
+                selectedChauffeur.setChauffeurPreference(newPreference);
+                selectedChauffeur.setAvailability(newAvailability);
+
+                chauffeurService.updateChauffeurData(chauffeurData);
+
                 chauffeurService.saveChauffeurData();
                 chauffeurTableView.refresh();
             });
         }
     }
 
-
-
-
-
 }
+
+
+
+
+
+
+
+
+

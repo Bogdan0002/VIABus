@@ -23,6 +23,8 @@ public class AddBusController {
     @FXML
     private TextField numberPlateTextField;
     @FXML
+    private ComboBox availabilityComboBox;
+    @FXML
     private Label errorLabel;
     @FXML
     private Label infoSaved;
@@ -46,6 +48,8 @@ public class AddBusController {
         System.out.println("Initializing AddBusController...");
         this.busService = new BusService("files/Busses.txt");
         busTypeComboBox.setItems(FXCollections.observableArrayList(BusType.values()));
+        availabilityComboBox.getItems().addAll(true, false);
+        availabilityComboBox.getSelectionModel().selectFirst();
     }
 
 
@@ -60,12 +64,13 @@ public class AddBusController {
             BusType busType = busTypeComboBox.getValue();
             String capacityText = capacityTextField.getText().trim();
             String numberPlate = numberPlateTextField.getText().trim();
+            boolean availability = (boolean) availabilityComboBox.getValue();
 
             // Validate the input
             if (busType == null || capacityText.isEmpty()) {
                 showError("Invalid capacity");
                 return;
-            } else if (numberPlate == null || capacityText.isEmpty()) {
+            } else if (numberPlate == null) {
                 showError("Invalid number plate");
                 return;
             }
@@ -82,7 +87,7 @@ public class AddBusController {
                 return;
             }
 
-            Bus bus = new Bus(numberPlate, capacity, busType);
+            Bus bus = new Bus(numberPlate, capacity, busType, availability);
             busService.addBus(bus);
             busData.add(bus);
             clearInputFields();
@@ -99,13 +104,14 @@ public class AddBusController {
         capacityTextField.clear();
         numberPlateTextField.clear();
         busTypeComboBox.setValue(null);
+        availabilityComboBox.setValue(null);
     }
 
     private void writeBusToFile(Bus bus) {
         String filePath = fileManager();
         System.out.println(filePath);
         try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(filePath, true)))) {
-            String lineToAdd = bus.getNumberPlate() + "," + bus.getBusType() + "," + bus.getSeatCapacity();
+            String lineToAdd = bus.getNumberPlate() + "," + bus.getBusType() + "," + bus.getSeatCapacity() + "," + bus.isAvailable();
             writer.println(lineToAdd);
         } catch (IOException e) {
             e.printStackTrace();

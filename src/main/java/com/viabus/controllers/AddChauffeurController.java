@@ -73,7 +73,7 @@ public class AddChauffeurController {
                 return;
             }
 
-            Chauffeur chauffeur = new Chauffeur(firstName, lastName, busType);
+            Chauffeur chauffeur = new Chauffeur(firstName, lastName, busType, availability);
             chauffeurService.addChauffeur(chauffeur);
             chauffeurData.add(chauffeur);
             clearInputFields();
@@ -119,7 +119,7 @@ public class AddChauffeurController {
         String filePath = fileManager();
         System.out.println(filePath);
         try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(filePath, true)))) {
-            String lineToAdd = chauffeur.getFirstName() + "," + chauffeur.getLastName() + "," + chauffeur.getChauffeurPreference() + "," + chauffeur.getAvailability();
+            String lineToAdd = chauffeur.getId() + "," + chauffeur.getFirstName() + "," + chauffeur.getLastName() + "," + chauffeur.getChauffeurPreference() + "," + chauffeur.getAvailability();
             writer.println(lineToAdd);
         } catch (IOException e) {
             e.printStackTrace();

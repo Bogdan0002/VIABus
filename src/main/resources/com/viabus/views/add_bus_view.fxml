@@ -14,20 +14,23 @@
     <Label text="Seat Capacity" GridPane.rowIndex="10" />
     <TextField fx:id="capacityTextField" GridPane.columnIndex="1" GridPane.rowIndex="10" />
 
-    <Label text="Bus Type" GridPane.rowIndex="16" />
+    <Label text="Bus Type" GridPane.rowIndex="17" />
 
-    <Button onAction="#handleAddBusButton" prefHeight="25.0" prefWidth="71.0" text="Add" GridPane.columnIndex="1" GridPane.rowIndex="21" />
-   <ComboBox fx:id="busTypeComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="16" />
-   <Label fx:id="errorLabel" prefHeight="21.0" prefWidth="150.0" styleClass="error-label" text="Error Message" textFill="#d31717" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="23" />
-   <Label fx:id="infoSaved" prefHeight="17.0" prefWidth="149.0" textFill="#619045" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="21" />
+    <Button onAction="#handleAddBusButton" prefHeight="25.0" prefWidth="71.0" text="Add" GridPane.columnIndex="1" GridPane.rowIndex="22" />
+   <ComboBox fx:id="busTypeComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="17" />
+   <Label fx:id="errorLabel" prefHeight="21.0" prefWidth="150.0" styleClass="error-label" text="Error Message" textFill="#d31717" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="24" />
+   <Label fx:id="infoSaved" prefHeight="17.0" prefWidth="149.0" textFill="#619045" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="22" />
    <Label text="Number Plates" GridPane.rowIndex="12" />
    <TextField fx:id="numberPlateTextField" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+   <Label text="Availability" GridPane.rowIndex="14" />
+   <ComboBox fx:id="availabilityComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="14" />
    <columnConstraints>
       <ColumnConstraints />
       <ColumnConstraints />
       <ColumnConstraints />
    </columnConstraints>
    <rowConstraints>
+      <RowConstraints />
       <RowConstraints />
       <RowConstraints />
       <RowConstraints />

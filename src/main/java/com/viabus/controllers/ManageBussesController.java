@@ -8,13 +8,11 @@ import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.*;
-import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
+import javafx.scene.layout.GridPane;
+import javafx.util.Pair;
 import java.util.Optional;
 
 
@@ -28,6 +26,8 @@ public class ManageBussesController {
     private TableColumn<Bus, String> busTypeColumn;
     @FXML
     private TableColumn<Bus, Integer> capacityColumn;
+    @FXML
+    private TableColumn<Bus, Boolean> busAvailabilityColumn;
     private ObservableList<Bus> busData;
     private BusService busService = new BusService("files/Busses.txt");
 
@@ -56,6 +56,7 @@ public class ManageBussesController {
         busNumberPlateColumn.setCellValueFactory(cellData -> Bindings.createObjectBinding(() -> cellData.getValue().getNumberPlate()).asString());
         busTypeColumn.setCellValueFactory(cellData -> Bindings.createObjectBinding(() -> cellData.getValue().getBusType().toString()));
         capacityColumn.setCellValueFactory(cellData -> Bindings.createObjectBinding(() -> cellData.getValue().getSeatCapacity()));
+        busAvailabilityColumn.setCellValueFactory(cellData -> Bindings.createObjectBinding(() -> cellData.getValue().isAvailable()));
 
         busService.loadBusData();
         busData.addAll(busService.getBusData());
@@ -75,7 +76,7 @@ public class ManageBussesController {
 
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 busData.remove(selectedBus);
-                busService.deleteBus(selectedBus);
+                busService.deleteBus(selectedBus, busData);
             }
         }
     }
@@ -84,58 +85,87 @@ public class ManageBussesController {
 
 
     @FXML
-    private void handleEditButton() {
-
-        String newLine =System.getProperty("line.separator");
-        // Get the selected bus from the table view
+    private void handleEditButton(){
+        // Get the selected chauffeur from the table view
         Bus selectedBus = busTableView.getSelectionModel().getSelectedItem();
 
         if (selectedBus != null) {
-            // Open a dialog to edit the bus
-            TextInputDialog dialog = new TextInputDialog();
+            // Create the custom dialog.
+            Dialog<Pair<String, String>> dialog = new Dialog<>();
             dialog.setTitle("Edit Bus");
-            dialog.setHeaderText("Edit the Bus details");
 
-            // Get all bus types
-            BusType[] busTypes = BusType.values();
-            StringBuilder busTypesStr = new StringBuilder();
-            for (BusType busType : busTypes) {
-                busTypesStr.append(busType.name()).append(", ");
-            }
-            // Remove the last comma and space
-            if (busTypesStr.length() > 0) {
-                busTypesStr.setLength(busTypesStr.length() - 2);
-            }
+            // Set the button types.
+            ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
+            dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
 
-            dialog.setContentText("Enter new values as: Number Plate, Bus Type, SeatCapacity" + newLine
-                    + "Example: AF 85 671,HANDICAP,20" + newLine
-                    + "Bus Types: " + busTypesStr);
+            // Create the fields and labels and add them to a grid pane.
+            GridPane grid = new GridPane();
+            grid.setHgap(10);
+            grid.setVgap(10);
+            grid.setPadding(new Insets(20, 150, 10, 10));
 
-            Optional<String> result = dialog.showAndWait();
-            result.ifPresent(busDetails -> {
-                // Parse the new values and update the selected bus
-                String[] busDetailsParts = busDetails.split(",");
-                String newNumberPlate = busDetailsParts[0].trim();
-                BusType busType = BusType.valueOf(busDetailsParts[1].trim().toUpperCase());
-                int seatCapacity = Integer.parseInt(busDetailsParts[2].trim());
+            TextField numberPlates = new TextField();
+            numberPlates.setText(selectedBus.getNumberPlate());
+            TextField seatCapacity = new TextField();
+            seatCapacity.setText(String.valueOf(selectedBus.getSeatCapacity()));
+            ComboBox<BusType> busType = new ComboBox<>();
+            busType.getItems().setAll(BusType.values());
+            busType.setValue(selectedBus.getBusType());
+            CheckBox available = new CheckBox("Available");
+            available.setSelected(selectedBus.isAvailable());
 
-                // Search for the bus in busData list in BusService and update it
-                for (Bus bus : busService.getBusData()) {
-                    if (bus.getNumberPlate().equals(selectedBus.getNumberPlate())) {
-                        bus.setNumberPlate(newNumberPlate);
-                        bus.setBusType(busType);
-                        bus.setSeatCapacity(seatCapacity);
-                        break;
-                    }
+            grid.add(new Label("Number Plates:"), 0, 0);
+            grid.add(numberPlates, 1, 0);
+            grid.add(new Label("Seat Capacity:"), 0, 1);
+            grid.add(seatCapacity, 1, 1);
+            grid.add(new Label("Bus Type:"), 0, 2);
+            grid.add(busType, 1, 2);
+            grid.add(available, 1, 3);
+
+            dialog.getDialogPane().setContent(grid);
+
+            // Enable/Disable save button depending on whether fields are empty.
+            Node saveButton = dialog.getDialogPane().lookupButton(saveButtonType);
+            saveButton.setDisable(true);
+
+            // Logic to enable save button only when fields are not empty
+            numberPlates.textProperty().addListener((observable, oldValue, newValue) -> {
+                saveButton.setDisable(newValue.trim().isEmpty());
+            });
+
+            seatCapacity.textProperty().addListener((observable, oldValue, newValue) -> {
+                ((Node) saveButton).setDisable(newValue.trim().isEmpty());
+            });
+
+            // Handle save button action.
+            dialog.setResultConverter(dialogButton -> {
+                if (dialogButton == saveButtonType) {
+                    return new Pair<>(numberPlates.getText(), seatCapacity.getText());
                 }
+                return null;
+            });
 
-                // Save the updated bus data to the .txt file
+            Optional<Pair<String, String>> result = dialog.showAndWait();
+
+            result.ifPresent(data -> {
+                // Get the new data and update chauffeur.
+                String newNumberPlates = data.getKey();
+                int newSeatCapacity = Integer.parseInt(data.getValue());
+                BusType newBusType = busType.getValue();
+                boolean newAvailability = available.isSelected();
+
+                selectedBus.setNumberPlate(newNumberPlates);
+                selectedBus.setSeatCapacity(newSeatCapacity);
+                selectedBus.setBusType(newBusType);
+                selectedBus.setAvailability(newAvailability);
+
+                busService.updateBusData(busData);
+
                 busService.saveBusData();
                 busTableView.refresh();
             });
         }
     }
-
 
 
 

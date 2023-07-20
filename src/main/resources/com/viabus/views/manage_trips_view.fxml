@@ -5,24 +5,23 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.viabus.views.ManageTripsView">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.viabus.controllers.ManageTripsController">
    <children>
       <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="400.0" prefWidth="600.0">
          <children>
             <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="400.0" prefWidth="600.0">
                <children>
-                  <TableView fx:id="chauffeurTableView" layoutX="-14.0" prefHeight="347.0" prefWidth="600.0">
+                  <TableView fx:id="tripTableView" layoutX="-14.0" prefHeight="347.0" prefWidth="600.0">
                      <columns>
-                        <TableColumn fx:id="tripIdColumn" prefWidth="74.0" text="ID " />
-                        <TableColumn fx:id="tripPickupLocationColumn" minWidth="0.0" prefWidth="127.0" text="Pick-up Location" />
-                        <TableColumn fx:id="tripDropoffLocationColumn" minWidth="0.0" prefWidth="133.0" text="Drop-off Location" />
-                        <TableColumn fx:id="tripDurationColumn" prefWidth="141.0" text="Duration" />
+                        <TableColumn fx:id="tripIdColumn" prefWidth="96.0" text="ID " />
+                        <TableColumn fx:id="tripPickupLocationColumn" minWidth="0.0" prefWidth="179.0" text="Pick-up Location" />
+                        <TableColumn fx:id="tripDropoffLocationColumn" minWidth="0.0" prefWidth="167.0" text="Drop-off Location" />
+                        <TableColumn fx:id="tripDurationColumn" prefWidth="157.0" text="Duration" />
                      </columns>
                   </TableView>
-                  <Button layoutX="72.0" layoutY="360.0" mnemonicParsing="false" onAction="#handleAddChauffeurButton" prefHeight="26.0" prefWidth="105.0" text="Add Chauffeur" />
-                  <Button layoutX="248.0" layoutY="360.0" mnemonicParsing="false" onAction="#handleEditChauffeurButton" prefHeight="26.0" prefWidth="105.0" text="Edit" />
-                  <Button layoutX="433.0" layoutY="360.0" mnemonicParsing="false" onAction="#handleDeleteChauffeurButton" prefHeight="26.0" prefWidth="105.0" text="Delete" />
+                  <Button layoutX="72.0" layoutY="360.0" mnemonicParsing="false" onAction="#handleAddTripButton" prefHeight="26.0" prefWidth="105.0" text="Create Trip" />
+                  <Button layoutX="248.0" layoutY="360.0" mnemonicParsing="false" onAction="#handleEditTripButton" prefHeight="26.0" prefWidth="105.0" text="Edit" />
+                  <Button layoutX="433.0" layoutY="360.0" mnemonicParsing="false" onAction="#handleDeleteTripButton" prefHeight="26.0" prefWidth="105.0" text="Delete" />
                </children>
             </AnchorPane>
          </children>

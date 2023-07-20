@@ -2,6 +2,8 @@ package com.viabus.service;
 
 import com.viabus.models.Bus;
 import com.viabus.models.BusType;
+import com.viabus.models.Chauffeur;
+import javafx.collections.ObservableList;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -26,11 +28,13 @@ public class BusService {
                 String line;
                 while ((line = br.readLine()) != null) {
                     String[] parts = line.split(",");
-                    if (parts.length == 3) {
+                    if (parts.length == 4) {
                         String numberPlate = String.valueOf(parts[0]);
                         BusType busType = BusType.valueOf(parts[1]);
                         int seatCapacity = Integer.parseInt(parts[2]);
-                        Bus bus = new Bus(numberPlate, seatCapacity, busType);
+                        boolean availability = Boolean.parseBoolean(parts[3]);
+                        Bus bus = new Bus(numberPlate, seatCapacity, busType, availability);
+                        bus.setAvailability(availability);
                         busData.add(bus);
                     }
                 }
@@ -40,9 +44,9 @@ public class BusService {
         }
 
         public  void saveBusData() {
-            try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(filePath, false)))) {
+            try { PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(filePath, false)));
                 for (Bus bus : busData) {
-                    String lineToAdd = bus.getNumberPlate() + "," + bus.getBusType() + "," + bus.getSeatCapacity();
+                    String lineToAdd = bus.getNumberPlate() + "," + bus.getBusType() + "," + bus.getSeatCapacity() + "," + bus.isAvailable();
                     writer.println(lineToAdd);
                 }
             } catch (IOException e) {
@@ -54,9 +58,13 @@ public class BusService {
             busData.add(bus);
         }
 
-    public void deleteBus(Bus bus) {
-        busData.remove(bus);
+    public void deleteBus(Bus bus, ObservableList<Bus> updatedBusData) {
+        busData = new ArrayList<>(updatedBusData);
         saveBusData();
+    }
+
+    public void updateBusData(ObservableList<Bus> updatedBusData) {
+        this.busData = new ArrayList<>(updatedBusData);
     }
 
 

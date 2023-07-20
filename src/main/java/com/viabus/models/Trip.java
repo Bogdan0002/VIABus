@@ -1,16 +1,30 @@
 package com.viabus.models;
 
+import java.util.ArrayList;
+
 public class Trip {
     private String destination;
     private String departure;
-    private int duration;
-    private String schedule;
+    private String duration;
+    private ArrayList<Trip> trips;
+    private int id;
+    private static int nextId = 9000;
 
-    public Trip(String destination, String departure, int duration, String schedule) {
+    public Trip(int id, String destination, String departure, String duration) {
         this.destination = destination;
         this.departure = departure;
         this.duration = duration;
-        this.schedule = schedule;
+        this.id = id;
+        this.trips = new ArrayList();
+
+        if (id >= nextId) {
+            nextId = id + 1;
+        }
+
+    }
+
+    public Trip(String destination, String departure, String duration) {
+        this(nextId, destination, departure, duration);
     }
 
     public String getDestination() {
@@ -29,19 +43,19 @@ public class Trip {
         this.departure = departure;
     }
 
-    public int getDuration() {
+    public String getDuration() {
         return duration;
     }
 
-    public void setDuration(int duration) {
+    public void setDuration(String duration) {
         this.duration = duration;
     }
 
-    public String getSchedule() {
-        return schedule;
+    public int getId() {
+        return id;
     }
 
-    public void setSchedule(String schedule) {
-        this.schedule = schedule;
+    public void setId(int id) {
+        this.id = id;
     }
 }
