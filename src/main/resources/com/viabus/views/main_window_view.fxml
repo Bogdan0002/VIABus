@@ -40,7 +40,7 @@
          </bottom>
       </BorderPane>
       <ButtonBar layoutY="582.0" prefHeight="40.0" prefWidth="90.0" />
-      <Button layoutX="335.0" layoutY="602.0" mnemonicParsing="false" onAction="#handleDeleteReservationButton" prefHeight="26.0" prefWidth="195.0" text="Delete" />
+      <Button layoutX="586.0" layoutY="602.0" mnemonicParsing="false" onAction="#handleDeleteReservationButton" prefHeight="26.0" prefWidth="195.0" text="Delete" />
       <Button layoutX="90.0" layoutY="602.0" mnemonicParsing="false" onAction="#handleCreateReservationButton" prefHeight="26.0" prefWidth="195.0" text="Create Reservation" />
       <Button layoutX="1082.0" layoutY="343.0" mnemonicParsing="false" onAction="#handleManageChauffeursButton" prefHeight="26.0" prefWidth="184.0" text="Manage Chauffeurs" />
       <Button layoutX="1082.0" layoutY="295.0" mnemonicParsing="false" onAction="#handleManageBussesButton" prefHeight="26.0" prefWidth="184.0" text="Manage Busses" />
@@ -51,5 +51,6 @@
                 <Image url="@../assets/viabus_logo.png" />
             </image>
         </ImageView>
+      <Button layoutX="335.0" layoutY="602.0" mnemonicParsing="false" onAction="#handleEditReservationButton" prefHeight="26.0" prefWidth="195.0" text="Edit" />
    </children>
 </AnchorPane>

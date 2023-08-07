@@ -94,6 +94,11 @@ public class Reservation {
     public void setBus(Bus bus) {
         this.bus = bus;
     }
+    public void setSchedule(LocalDate startDate, LocalDate endDate) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
 
     public Customer getCustomer() {
         return customer;

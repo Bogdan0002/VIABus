@@ -85,6 +85,10 @@ public class ReservationService {
                 .collect(Collectors.toList());
     }
 
+    public void updateReservationData(ObservableList<Reservation> updatedReservationData){
+        this.reservationData = new ArrayList<>(updatedReservationData);
+    }
+
     private boolean isAvailable(Bus bus, LocalDate startDate, LocalDate endDate) {
         return bus.getReservations().stream()
                 .noneMatch(reservation -> isOverlapping(reservation, startDate, endDate));

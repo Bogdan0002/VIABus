@@ -1,8 +1,6 @@
 package com.viabus.controllers;
 
-import com.viabus.models.Bus;
-import com.viabus.models.Reservation;
-import com.viabus.models.Trip;
+import com.viabus.models.*;
 import com.viabus.service.*;
 import com.viabus.viewHandlers.*;
 
@@ -11,14 +9,13 @@ import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.geometry.Insets;
+import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
+import javafx.util.Pair;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.util.*;
 
 public class MainWindowController {
     @FXML
@@ -96,6 +93,100 @@ public class MainWindowController {
             }
         }
     }
+
+    @FXML
+    private void handleEditReservationButton() {
+        // Get the selected reservation from the table view
+        Reservation selectedReservation = reservationTableView.getSelectionModel().getSelectedItem();
+
+        if (selectedReservation != null) {
+            // Create the custom dialog.
+            Dialog<Map<String, Object>> dialog = new Dialog<>();
+            dialog.setTitle("Edit Reservation");
+
+            // Set the button types.
+            ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
+            dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
+
+            // Create the fields, labels, and combo boxes and add them to a grid pane.
+            GridPane grid = new GridPane();
+            grid.setHgap(10);
+            grid.setVgap(10);
+            grid.setPadding(new Insets(20, 150, 10, 10));
+
+            ComboBox<Trip> tripBox = new ComboBox<>();
+            tripBox.getItems().addAll(tripService.getAll());
+            tripBox.setValue(selectedReservation.getTrip());
+            ComboBox<Customer> customerBox = new ComboBox<>();
+            customerBox.getItems().addAll(customerService.getAll());
+            customerBox.setValue(selectedReservation.getCustomer());
+            ComboBox<Chauffeur> chauffeurBox = new ComboBox<>();
+            chauffeurBox.getItems().addAll(chauffeurService.getAll());
+            chauffeurBox.setValue(selectedReservation.getChauffeur());
+            ComboBox<Bus> busBox = new ComboBox<>();
+            busBox.getItems().addAll(busService.getAll());
+            busBox.setValue(selectedReservation.getBus());
+            DatePicker startDatePicker = new DatePicker(selectedReservation.getStartDate());
+            DatePicker endDatePicker = new DatePicker(selectedReservation.getEndDate());
+
+            grid.add(new Label("Trip:"), 0, 0);
+            grid.add(tripBox, 1, 0);
+            grid.add(new Label("Customer:"), 0, 1);
+            grid.add(customerBox, 1, 1);
+            grid.add(new Label("Chauffeur:"), 0, 2);
+            grid.add(chauffeurBox, 1, 2);
+            grid.add(new Label("Bus:"), 0, 3);
+            grid.add(busBox, 1, 3);
+            grid.add(new Label("Start Date:"), 0, 4);
+            grid.add(startDatePicker, 1, 4);
+            grid.add(new Label("End Date:"), 0, 5);
+            grid.add(endDatePicker, 1, 5);
+
+            dialog.getDialogPane().setContent(grid);
+
+            // Handle save button action.
+            dialog.setResultConverter(dialogButton -> {
+                if (dialogButton == saveButtonType) {
+                    Map<String, Object> result = new HashMap<>();
+                    result.put("trip", tripBox.getValue());
+                    result.put("customer", customerBox.getValue());
+                    result.put("chauffeur", chauffeurBox.getValue());
+                    result.put("bus", busBox.getValue());
+                    result.put("startDate", startDatePicker.getValue()); // Add start date
+                    result.put("endDate", endDatePicker.getValue()); // Add end date
+                    return result;
+                }
+                return null;
+            });
+
+            Optional<Map<String, Object>> result = dialog.showAndWait();
+
+            result.ifPresent(data -> {
+                // Get the new data and update reservation.
+                Trip newTrip = (Trip) data.get("trip");
+                Customer newCustomer = (Customer) data.get("customer");
+                Chauffeur newChauffeur = (Chauffeur) data.get("chauffeur");
+                Bus newBus = (Bus) data.get("bus");
+                LocalDate newStartDate = (LocalDate) data.get("startDate");
+                LocalDate newEndDate = (LocalDate) data.get("endDate");
+
+                selectedReservation.setTrip(newTrip);
+                selectedReservation.setCustomer(newCustomer);
+                selectedReservation.setChauffeur(newChauffeur);
+                selectedReservation.setBus(newBus);
+                selectedReservation.setStartDate(newStartDate); // Set start date
+                selectedReservation.setEndDate(newEndDate); // Set end date
+
+                reservationService.updateReservationData(reservationData); // Implement this method accordingly
+                reservationService.saveReservationData();
+                reservationTableView.refresh();
+            });
+        }
+    }
+
+
+
+
 
     @FXML
     private void handleManageChauffeursButton() {
