@@ -1,19 +1,23 @@
 package com.viabus.service;
 
+import com.viabus.models.Chauffeur;
 import com.viabus.models.Trip;
 import javafx.collections.ObservableList;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class TripService {
+    private static TripService instance;
     private List<Trip> tripData;
     private String filePath;
 
         public TripService(String filePath) {
             this.filePath = filePath;
             tripData = new ArrayList<>();
+            loadTripData();
         }
 
         public List<Trip> getTripData() {
@@ -29,6 +33,13 @@ public class TripService {
             saveTripData();
         }
 
+    public static TripService getInstance(String filePath) {
+        if (instance == null) {
+            instance = new TripService(filePath);
+        }
+        return instance;
+    }
+
         public void saveTripData(){
             try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(filePath, false)))) {
                 for (Trip trip : tripData) {
@@ -41,6 +52,7 @@ public class TripService {
         }
 
         public void loadTripData(){
+
             try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
                 String line;
                 while ((line = br.readLine()) != null) {
@@ -54,14 +66,31 @@ public class TripService {
                         tripData.add(trip);
                     }
                 }
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
         }
 
         public void updateTripData(ObservableList<Trip> updatedTripData) {
             this.tripData = new ArrayList<>(updatedTripData);
         }
+
+    public  Trip getTripById(int tripId) {
+        if(tripData != null) {
+            for (Trip trip : tripData) {
+                if (trip.getId() == tripId) {
+                    return trip;
+                }
+            }
+        }
+        throw new NoSuchElementException("No trip with id " + tripId + " found");
+    }
+
+    public List<Trip> getAll() {
+        return new ArrayList<>(tripData);
+    }
 
 }
 

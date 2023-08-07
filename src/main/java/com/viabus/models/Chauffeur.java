@@ -1,6 +1,7 @@
 package com.viabus.models;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Chauffeur {
     private String firstName;
@@ -8,6 +9,7 @@ public class Chauffeur {
     private int id;
     private BusType chauffeurPreference;
     private boolean availability;
+    private List<Reservation> reservations;
     private ArrayList<Chauffeur> chauffeurs;
     // Static integer that is shared among all instances of Chauffeur
     private static int nextId = 0;
@@ -20,6 +22,7 @@ public class Chauffeur {
         this.chauffeurPreference = chauffeurPreference;
         this.availability = true;
         this.chauffeurs = new ArrayList();
+        this.reservations = new ArrayList();
 
         if (id >= nextId) {
             nextId = id + 1;
@@ -83,5 +86,16 @@ public class Chauffeur {
 
     public static void setNextId(int nextId) {
         Chauffeur.nextId = nextId;
+    }
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+    @Override
+    public String toString() {
+        return String.valueOf(this.id);
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
     }
 }

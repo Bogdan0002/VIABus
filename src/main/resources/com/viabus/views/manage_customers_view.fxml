@@ -7,17 +7,18 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.viabus.controllers.ManageCustomersController">
    <children>
-      <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="400.0" prefWidth="600.0">
+      <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="410.0" prefWidth="620.0">
          <children>
             <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="400.0" prefWidth="600.0">
                <children>
                   <TableView fx:id="customerTableView" prefHeight="347.0" prefWidth="600.0">
                      <columns>
-                        <TableColumn fx:id="customerIdColumn" prefWidth="74.0" text="ID " />
-                        <TableColumn fx:id="customerFirstNameColumn" minWidth="0.0" prefWidth="127.0" text="First Name" />
-                        <TableColumn fx:id="customerLastNameColumn" minWidth="0.0" prefWidth="133.0" text="Last Name" />
-                        <TableColumn fx:id="customerPhoneColumn" prefWidth="123.0" text="Phone" />
-                        <TableColumn fx:id="customerEmailColumn" prefWidth="141.0" text="Email" />
+                        <TableColumn fx:id="customerIdColumn" prefWidth="70.0" text="ID " />
+                        <TableColumn fx:id="customerFirstNameColumn" minWidth="0.0" prefWidth="111.0" text="First Name" />
+                        <TableColumn fx:id="customerLastNameColumn" minWidth="0.0" prefWidth="114.0" text="Last Name" />
+                        <TableColumn fx:id="customerPhoneColumn" prefWidth="108.0" text="Phone" />
+                        <TableColumn fx:id="customerEmailColumn" prefWidth="136.0" text="Email" />
+                        <TableColumn fx:id="customerCountColumn" prefWidth="59.0" text="Count" />
                      </columns>
                   </TableView>
                   <Button layoutX="72.0" layoutY="360.0" mnemonicParsing="false" onAction="#handleAddCustomerButton" prefHeight="26.0" prefWidth="105.0" text="Add Customer" />

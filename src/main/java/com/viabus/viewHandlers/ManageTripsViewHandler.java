@@ -15,7 +15,7 @@ public class ManageTripsViewHandler {
     private final TripService tripService;
 
     public ManageTripsViewHandler(TripService tripService) {
-        this.tripService = new TripService("files/Trips.txt");
+        this.tripService =  tripService;
     }
 
     public void showManageTripsWindow(){

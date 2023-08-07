@@ -30,7 +30,7 @@ public class ManageTripsController {
     private TableColumn<Trip, String> tripDurationColumn;
     private ObservableList<Trip> tripData;
 
-    private TripService tripService = new TripService("files/Trips.txt");
+    private TripService tripService = TripService.getInstance("files/Trips.txt");
 
     public void setTripService(TripService tripService) {
         this.tripService = tripService;
@@ -56,8 +56,9 @@ public class ManageTripsController {
         tripDurationColumn.setCellValueFactory(cellData -> Bindings.createObjectBinding(() -> cellData.getValue().getDuration()).asString());
         tripIdColumn.setCellValueFactory(cellData -> Bindings.createObjectBinding(() -> cellData.getValue().getId()));
 
-        tripService.loadTripData();
+        System.out.println("Before: " + tripData);
         tripData.addAll(tripService.getTripData());
+        System.out.println("After: " + tripData);
 
     }
 

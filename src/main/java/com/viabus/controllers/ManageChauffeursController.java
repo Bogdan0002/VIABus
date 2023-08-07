@@ -59,7 +59,6 @@ public class ManageChauffeursController {
         chauffeurPreferenceColumn.setCellValueFactory(cellData -> Bindings.createObjectBinding(() -> cellData.getValue().getChauffeurPreference()));
         chauffeurAvailabilityColumn.setCellValueFactory(cellData -> Bindings.createObjectBinding(() -> cellData.getValue().getAvailability()));
 
-        chauffeurService.loadChauffeurData();
         chauffeurData.addAll(chauffeurService.getChauffeurData());
 
     }

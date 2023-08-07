@@ -2,19 +2,23 @@ package com.viabus.service;
 
 import com.viabus.models.BusType;
 import com.viabus.models.Chauffeur;
+import com.viabus.models.Trip;
 import javafx.collections.ObservableList;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 public class ChauffeurService {
-    private List<Chauffeur> chauffeurData;
+    private static List<Chauffeur> chauffeurData;
     private String filePath;
 
     public ChauffeurService(String filePath) {
         this.filePath = filePath;
         chauffeurData = new ArrayList<>();
+        loadChauffeurData();
     }
 
     public List<Chauffeur> getChauffeurData() {
@@ -80,7 +84,21 @@ public class ChauffeurService {
         saveChauffeurData();
     }
 
+    public List<Chauffeur> getAvailableChauffeurs() {
+        return chauffeurData.stream().filter(Chauffeur::getAvailability).collect(Collectors.toList());
+    }
 
+    public static Chauffeur getChauffeurById(int chauffeurId) {
+        for (Chauffeur chauffeur : chauffeurData) {
+            if (chauffeur.getId() == chauffeurId) {
+                return chauffeur;
+            }
+        }
+        throw new NoSuchElementException("No chauffeur with id " + chauffeurId + " found");
+    }
 
+    public List<Chauffeur> getAll() {
+        return new ArrayList<>(chauffeurData);
+    }
 
 }

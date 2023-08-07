@@ -1,6 +1,7 @@
 package com.viabus.models;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Bus {
     private int busId;
@@ -8,6 +9,7 @@ public class Bus {
     private BusType busType;
     private String numberPlate;
     private boolean availability;
+    private List<Reservation> reservations;
 
     private ArrayList<Bus> busses;
 
@@ -17,6 +19,7 @@ public class Bus {
         this.busType = busType;
         this.availability = true;
         this.busses = new ArrayList();
+        this.reservations = new ArrayList();
     }
 
     public String getNumberPlate() {
@@ -49,6 +52,18 @@ public class Bus {
 
     public void setAvailability(boolean availability) {
         this.availability = availability;
+    }
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(this.numberPlate);
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
     }
 
 }

@@ -1,1 +1,4 @@
 9000,Billund,Horsens,6 hours
+9001,Aarhus,Copenhagen,7 hours
+9002,Esbjerg,Hamburg,5 hours
+9003,Copenhagen,Aalborg,9 hours

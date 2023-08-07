@@ -30,6 +30,8 @@ public class ManageCustomersController {
     @FXML
     private TableColumn<Customer, String> customerPhoneColumn;
     @FXML
+    private TableColumn<Customer, String> customerCountColumn;
+    @FXML
     private TableColumn<Customer, Integer> customerIdColumn;
     private ObservableList<Customer> customerData;
     private CustomerService customerService = new CustomerService("files/Customers.txt");
@@ -58,8 +60,9 @@ public class ManageCustomersController {
         customerEmailColumn.setCellValueFactory(cellData -> Bindings.createObjectBinding(() -> cellData.getValue().getEmail()).asString());
         customerPhoneColumn.setCellValueFactory(cellData -> Bindings.createObjectBinding(() -> cellData.getValue().getPhoneNumber()).asString());
         customerIdColumn.setCellValueFactory(cellData -> Bindings.createObjectBinding(() -> cellData.getValue().getId()));
+        customerCountColumn.setCellValueFactory(cellData -> Bindings.createObjectBinding(() -> cellData.getValue().getReservationCount()).asString());
 
-        customerService.loadCustomerData();
+
         customerData.addAll(customerService.getCustomerData());
     }
 

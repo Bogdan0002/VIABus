@@ -81,7 +81,7 @@ public class AddCustomerController {
         String filePath = fileManager();
         System.out.println(filePath);
         try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(filePath, true)))) {
-            String lineToAdd = customer.getId() + "," + customer.getFirstName() + "," + customer.getLastName() + "," + customer.getEmail() + "," + customer.getPhoneNumber();
+            String lineToAdd = customer.getId() + "," + customer.getFirstName() + "," + customer.getLastName() + "," + customer.getEmail() + "," + customer.getPhoneNumber() + "," + customer.getReservationCount();
             writer.println(lineToAdd);
         } catch (IOException e) {
             e.printStackTrace();

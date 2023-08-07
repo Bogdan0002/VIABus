@@ -1,2 +1,2 @@
-1000,BOgdan,pavliuc,222@gmail.com,31425364
-1001,Ion,Postolache,gege@gmail.com,12345678
+1000,BOgdan,pavliuc,222@gmail.com,31425364,0
+1001,Ion,Postolache,gege@gmail.com,12345678,0

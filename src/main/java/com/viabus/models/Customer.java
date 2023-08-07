@@ -10,6 +10,7 @@ public class Customer {
     private String phoneNumber;
     private static int nextId = 1000;
     private ArrayList<Customer> customers;
+    private int reservationCount = 0;
 
 public Customer(int id, String firstName, String lastName, String email, String phoneNumber) {
         this.firstName = firstName;
@@ -72,6 +73,16 @@ public Customer(int id, String firstName, String lastName, String email, String 
     public static int getNextId() {
         return nextId;
     }
+    @Override
+    public String toString() {
+        return String.valueOf(this.id);
+    }
+
+    public void setReservationCount(int reservationCount) {
+        this.reservationCount = reservationCount;
+    }
+
+
 
     public static void setNextId(int nextId) {
         Customer.nextId = nextId;
@@ -79,6 +90,15 @@ public Customer(int id, String firstName, String lastName, String email, String 
 
     public ArrayList<Customer> getCustomers() {
         return customers;
+    }
+
+
+    public int getReservationCount() {
+        return reservationCount;
+    }
+
+    public void incrementReservationCount() {
+        this.reservationCount += 1;
     }
 
     public void setCustomers(ArrayList<Customer> customers) {

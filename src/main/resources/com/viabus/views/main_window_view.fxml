@@ -1,40 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="642.0" prefWidth="1267.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.viabus.controllers.MainWindowController">
+<AnchorPane prefHeight="641.0" prefWidth="1296.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.viabus.controllers.MainWindowController">
    <children>
-      <BorderPane prefHeight="596.0" prefWidth="1051.0">
+      <BorderPane layoutX="8.0" prefHeight="596.0" prefWidth="1043.0">
          <top>
-            <Label prefHeight="72.0" prefWidth="95.0" text="VIA Bus System" BorderPane.alignment="CENTER" />
+            <Label prefHeight="72.0" prefWidth="204.0" text="Reservations Overview" textFill="#6b5850" BorderPane.alignment="CENTER">
+               <font>
+                  <Font size="20.0" />
+               </font></Label>
          </top>
          <bottom>
-            <TableView prefHeight="516.0" prefWidth="1036.0" BorderPane.alignment="CENTER">
+            <TableView fx:id="reservationTableView" prefHeight="522.0" prefWidth="1119.0" BorderPane.alignment="CENTER">
               <columns>
-                <TableColumn prefWidth="135.0" text="Trip ID" />
-                <TableColumn prefWidth="150.0" text="From" />
-                  <TableColumn prefWidth="177.0" text="To" />
-                  <TableColumn minWidth="3.0" prefWidth="167.0" text="Schedule" />
-                  <TableColumn minWidth="3.0" prefWidth="198.0" text="Bus" />
-                  <TableColumn minWidth="3.0" prefWidth="223.0" text="Chauffeur" />
+                <TableColumn fx:id="reservationIdColumn" prefWidth="113.0" text="Reservation ID" />
+                <TableColumn fx:id="tripIdColumn" prefWidth="107.0" text="Trip ID" />
+                  <TableColumn fx:id="departureColumn" prefWidth="148.0" text="Departure" />
+                  <TableColumn fx:id="destinationColumn" minWidth="3.0" prefWidth="136.0" text="Destination" />
+                  <TableColumn fx:id="busIdColumn" minWidth="3.0" prefWidth="89.0" text="Bus ID" />
+                  <TableColumn fx:id="chauffeurIdColumn" minWidth="3.0" prefWidth="99.0" text="Chauffeur ID" />
+                  <TableColumn fx:id="scheduleColumn" prefWidth="213.0" text="Schedule" />
+                  <TableColumn fx:id="customerIdColumn" minWidth="3.0" prefWidth="117.0" text="Customer ID" />
               </columns>
+               <BorderPane.margin>
+                  <Insets left="20.0" />
+               </BorderPane.margin>
             </TableView>
          </bottom>
       </BorderPane>
       <ButtonBar layoutY="582.0" prefHeight="40.0" prefWidth="90.0" />
-      <Button layoutX="428.0" layoutY="602.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="195.0" text="Edit" />
-      <Button layoutX="776.0" layoutY="602.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="195.0" text="Delete" />
-      <Button layoutX="121.0" layoutY="602.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="195.0" text="Create Reservation" />
-      <Button layoutX="1059.0" layoutY="272.0" mnemonicParsing="false" onAction="#handleManageChauffeursButton" prefHeight="26.0" prefWidth="184.0" text="Manage Chauffeurs" />
-      <Button layoutX="1059.0" layoutY="224.0" mnemonicParsing="false" onAction="#handleManageBussesButton" prefHeight="26.0" prefWidth="184.0" text="Manage Busses" />
-      <Button layoutX="1059.0" layoutY="172.0" mnemonicParsing="false" onAction="#handleManageTripsButton" prefHeight="26.0" prefWidth="184.0" text="Manage Trips" />
-      <Button layoutX="1059.0" layoutY="321.0" mnemonicParsing="false" onAction="#handleManageCustomersButton" prefHeight="26.0" prefWidth="184.0" text="Manage Customers" />
-      <Label layoutX="1130.0" layoutY="56.0" text="LOGO" />
+      <Button layoutX="335.0" layoutY="602.0" mnemonicParsing="false" onAction="#handleDeleteReservationButton" prefHeight="26.0" prefWidth="195.0" text="Delete" />
+      <Button layoutX="90.0" layoutY="602.0" mnemonicParsing="false" onAction="#handleCreateReservationButton" prefHeight="26.0" prefWidth="195.0" text="Create Reservation" />
+      <Button layoutX="1082.0" layoutY="343.0" mnemonicParsing="false" onAction="#handleManageChauffeursButton" prefHeight="26.0" prefWidth="184.0" text="Manage Chauffeurs" />
+      <Button layoutX="1082.0" layoutY="295.0" mnemonicParsing="false" onAction="#handleManageBussesButton" prefHeight="26.0" prefWidth="184.0" text="Manage Busses" />
+      <Button layoutX="1082.0" layoutY="243.0" mnemonicParsing="false" onAction="#handleManageTripsButton" prefHeight="26.0" prefWidth="184.0" text="Manage Trips" />
+      <Button layoutX="1082.0" layoutY="392.0" mnemonicParsing="false" onAction="#handleManageCustomersButton" prefHeight="26.0" prefWidth="184.0" text="Manage Customers" />
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="1098.0" layoutY="73.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../assets/viabus_logo.png" />
+            </image>
+        </ImageView>
    </children>
 </AnchorPane>

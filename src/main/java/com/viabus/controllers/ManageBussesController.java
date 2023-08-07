@@ -58,7 +58,6 @@ public class ManageBussesController {
         capacityColumn.setCellValueFactory(cellData -> Bindings.createObjectBinding(() -> cellData.getValue().getSeatCapacity()));
         busAvailabilityColumn.setCellValueFactory(cellData -> Bindings.createObjectBinding(() -> cellData.getValue().isAvailable()));
 
-        busService.loadBusData();
         busData.addAll(busService.getBusData());
     }
 
