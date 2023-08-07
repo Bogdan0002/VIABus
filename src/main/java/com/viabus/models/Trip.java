@@ -47,9 +47,6 @@ public class Trip {
         return duration;
     }
 
-    public void setDuration(String duration) {
-        this.duration = duration;
-    }
 
     public int getId() {
         return id;

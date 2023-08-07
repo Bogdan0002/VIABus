@@ -1,9 +1,6 @@
 package com.viabus.controllers;
 
-import com.viabus.models.BusType;
-import com.viabus.models.Chauffeur;
 import com.viabus.models.Customer;
-import com.viabus.service.ChauffeurService;
 import com.viabus.service.CustomerService;
 import com.viabus.viewHandlers.AddCustomerViewHandler;
 import javafx.beans.binding.Bindings;

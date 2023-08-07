@@ -25,7 +25,6 @@ public class AddTripController {
     @FXML
     private Label infoSaved;
     private ObservableList<Trip> tripData;
-    private Trip trip;
     private TripService tripService;
 
     private String fileManager(){

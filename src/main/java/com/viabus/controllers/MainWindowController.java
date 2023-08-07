@@ -3,8 +3,6 @@ package com.viabus.controllers;
 import com.viabus.models.*;
 import com.viabus.service.*;
 import com.viabus.viewHandlers.*;
-
-
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,8 +10,6 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import javafx.util.Pair;
-
 import java.time.LocalDate;
 import java.util.*;
 
@@ -36,8 +32,8 @@ public class MainWindowController {
     private TableColumn<Reservation,String> destinationColumn;
     @FXML
     private TableColumn<Reservation,String> departureColumn;
-    private BusService busService; // Update the type to BusService
-    private ChauffeurService chauffeurService; // Update the type to ChauffeurService
+    private BusService busService;
+    private ChauffeurService chauffeurService;
     private CustomerService customerService;
     private TripService tripService;
     private ReservationService reservationService;
@@ -72,7 +68,7 @@ public class MainWindowController {
 
     @FXML
     private void handleManageBussesButton() {
-        ManageBussesViewHandler viewHandler = new ManageBussesViewHandler(busService); // Pass the busService instance
+        ManageBussesViewHandler viewHandler = new ManageBussesViewHandler(busService);
         viewHandler.showManageBussesWindow();
     }
 
@@ -174,10 +170,10 @@ public class MainWindowController {
                 selectedReservation.setCustomer(newCustomer);
                 selectedReservation.setChauffeur(newChauffeur);
                 selectedReservation.setBus(newBus);
-                selectedReservation.setStartDate(newStartDate); // Set start date
-                selectedReservation.setEndDate(newEndDate); // Set end date
+                selectedReservation.setStartDate(newStartDate);
+                selectedReservation.setEndDate(newEndDate);
 
-                reservationService.updateReservationData(reservationData); // Implement this method accordingly
+                reservationService.updateReservationData(reservationData);
                 reservationService.saveReservationData();
                 reservationTableView.refresh();
             });
@@ -190,7 +186,7 @@ public class MainWindowController {
 
     @FXML
     private void handleManageChauffeursButton() {
-        ManageChauffeursViewHandler viewHandler = new ManageChauffeursViewHandler(chauffeurService); // Pass the busService instance
+        ManageChauffeursViewHandler viewHandler = new ManageChauffeursViewHandler(chauffeurService);
         viewHandler.showManageChauffeursWindow();
     }
 //    @FXML

@@ -1,6 +1,5 @@
 package com.viabus.viewHandlers;
 
-import com.viabus.controllers.ManageChauffeursController;
 import com.viabus.controllers.ManageTripsController;
 import com.viabus.service.TripService;
 import javafx.fxml.FXMLLoader;

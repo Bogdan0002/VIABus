@@ -14,7 +14,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class AddChauffeurViewHandler {
-    private AddChauffeurController addChauffeurController;
 
     public void showAddChauffeurWindow(ObservableList<Chauffeur> chauffeurData, ChauffeurService chauffeurService) {
         try {

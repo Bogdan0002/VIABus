@@ -11,8 +11,7 @@ public class Chauffeur {
     private boolean availability;
     private List<Reservation> reservations;
     private ArrayList<Chauffeur> chauffeurs;
-    // Static integer that is shared among all instances of Chauffeur
-    private static int nextId = 0;
+    private static int nextId = 0; // Static integer that is shared among all instances of Chauffeur
 
 
     public Chauffeur(int id, String firstName, String lastName, BusType chauffeurPreference, boolean availability) {

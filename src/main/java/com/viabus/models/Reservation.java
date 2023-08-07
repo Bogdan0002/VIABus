@@ -1,7 +1,5 @@
 package com.viabus.models;
 
-import com.viabus.service.ReservationService;
-
 import java.time.LocalDate;
 
 public class Reservation {

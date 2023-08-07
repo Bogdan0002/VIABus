@@ -1,6 +1,5 @@
 package com.viabus.controllers;
 
-import com.viabus.models.Bus;
 import com.viabus.models.BusType;
 import com.viabus.models.Chauffeur;
 import com.viabus.service.ChauffeurService;
@@ -8,12 +7,10 @@ import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.util.Duration;
-
 import java.io.*;
 
 public class AddChauffeurController {
@@ -30,7 +27,6 @@ public class AddChauffeurController {
     @FXML
     private Label infoSaved;
     private ObservableList<Chauffeur> chauffeurData;
-    private Chauffeur chauffeur;
     private ChauffeurService chauffeurService;
 
     private String fileManager() {

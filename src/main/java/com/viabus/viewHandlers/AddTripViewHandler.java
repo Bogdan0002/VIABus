@@ -1,6 +1,5 @@
 package com.viabus.viewHandlers;
 
-import com.viabus.controllers.AddChauffeurController;
 import com.viabus.controllers.AddTripController;
 import com.viabus.models.Trip;
 import com.viabus.service.TripService;
@@ -14,7 +13,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class AddTripViewHandler {
-    private AddTripController addTripController;
 
     public void showAddTripWindow(ObservableList<Trip> tripData, TripService tripService){
         try {

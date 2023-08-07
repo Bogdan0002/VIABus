@@ -119,9 +119,6 @@ public class AddBusController {
 
     }
 
-
-
-
     private void showError(String errorMessage) {
         errorLabel.setText(errorMessage);
         errorLabel.setVisible(true);

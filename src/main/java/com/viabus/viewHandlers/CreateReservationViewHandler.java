@@ -13,7 +13,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class CreateReservationViewHandler {
-   private CreateReservationController createReservationController;
 
     public void showCreateReservationWindow(ObservableList<Reservation> reservationData, ReservationService reservationService) {
         try {

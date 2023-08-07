@@ -1,7 +1,5 @@
 package com.viabus.controllers;
 
-import com.viabus.models.BusType;
-import com.viabus.models.Chauffeur;
 import com.viabus.models.Trip;
 import com.viabus.service.TripService;
 import com.viabus.viewHandlers.AddTripViewHandler;
@@ -56,9 +54,7 @@ public class ManageTripsController {
         tripDurationColumn.setCellValueFactory(cellData -> Bindings.createObjectBinding(() -> cellData.getValue().getDuration()).asString());
         tripIdColumn.setCellValueFactory(cellData -> Bindings.createObjectBinding(() -> cellData.getValue().getId()));
 
-        System.out.println("Before: " + tripData);
         tripData.addAll(tripService.getTripData());
-        System.out.println("After: " + tripData);
 
     }
 

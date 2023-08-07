@@ -2,7 +2,6 @@ package com.viabus.service;
 
 import com.viabus.models.BusType;
 import com.viabus.models.Chauffeur;
-import com.viabus.models.Trip;
 import javafx.collections.ObservableList;
 
 import java.io.*;

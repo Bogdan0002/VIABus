@@ -70,9 +70,6 @@ public Customer(int id, String firstName, String lastName, String email, String 
         this.phoneNumber = phoneNumber;
     }
 
-    public static int getNextId() {
-        return nextId;
-    }
     @Override
     public String toString() {
         return String.valueOf(this.id);
@@ -80,12 +77,6 @@ public Customer(int id, String firstName, String lastName, String email, String 
 
     public void setReservationCount(int reservationCount) {
         this.reservationCount = reservationCount;
-    }
-
-
-
-    public static void setNextId(int nextId) {
-        Customer.nextId = nextId;
     }
 
     public ArrayList<Customer> getCustomers() {

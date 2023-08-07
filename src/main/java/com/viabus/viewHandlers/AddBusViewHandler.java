@@ -13,7 +13,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class AddBusViewHandler {
-    private AddBusController addBusController;
 
     public void showAddBussesWindow(ObservableList<Bus> busData, BusService busService) {
         try {
