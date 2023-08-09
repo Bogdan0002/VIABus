@@ -80,6 +80,10 @@ public class AddChauffeurController {
         }
     }
 
+    /**
+     * This method displays an error message to the user when the input is invalid
+     * @param errorMessage to be displayed to the user when the input is invalid.
+     */
     private void showError(String errorMessage) {
         errorLabel.setText(errorMessage);
         errorLabel.setVisible(true);
@@ -90,6 +94,10 @@ public class AddChauffeurController {
         delay.play();
     }
 
+    /**
+     * This method displays a message to the user when the object is added successfully
+     * @param infoMessage to be displayed to the user when the object is added successfully.
+     */
     private void infoSaved(String infoMessage) {
         infoSaved.setText(infoMessage);
         infoSaved.setVisible(true);

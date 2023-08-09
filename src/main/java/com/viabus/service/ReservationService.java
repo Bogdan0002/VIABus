@@ -35,6 +35,9 @@ public class ReservationService {
         saveReservationData();
     }
 
+    /**
+     * This method is used to save the reservation data to the file.
+     */
     public void saveReservationData() {
         try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(filePath, false)))) {
             for (Reservation reservation : reservationData) {
@@ -47,6 +50,14 @@ public class ReservationService {
             e.printStackTrace();
         }
     }
+
+    /**
+     * This method is used to load the reservation data from the file to the reservationData list.
+     * @param tripService for getting the trip object
+     * @param chauffeurService for getting the chauffeur object
+     * @param busService for getting the bus object
+     * @param customerService  for getting the customer object
+     */
     public void loadReservationData(TripService tripService, ChauffeurService chauffeurService, BusService busService, CustomerService customerService) {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;

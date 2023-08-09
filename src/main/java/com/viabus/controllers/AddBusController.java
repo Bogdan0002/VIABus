@@ -57,6 +57,9 @@ public class AddBusController {
         this.busData = busData;
     }
 
+    /**
+     * This method handles the add bus button. It gets the input values from the text fields and validates them.
+     */
     @FXML
     private void handleAddBusButton() {
         try {
@@ -119,6 +122,10 @@ public class AddBusController {
 
     }
 
+    /**
+     * This method displays an error message to the user when the input is invalid
+     * @param errorMessage to be displayed to the user when the input is invalid.
+     */
     private void showError(String errorMessage) {
         errorLabel.setText(errorMessage);
         errorLabel.setVisible(true);
@@ -128,6 +135,11 @@ public class AddBusController {
         });
         delay.play();
     }
+
+    /**
+     * This method displays a message to the user when the object is added successfully
+     * @param infoMessage to be displayed to the user when the object is added successfully.
+     */
 
     private void infoSaved(String infoMessage) {
         infoSaved.setText(infoMessage);

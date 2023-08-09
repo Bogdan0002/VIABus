@@ -34,6 +34,9 @@ public class ChauffeurService {
 
     }
 
+    /**
+     * Saves the chauffeur data to the file
+     */
     public void saveChauffeurData() {
         try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(filePath, false)))) {
             for (Chauffeur chauffeur : chauffeurData) {
@@ -45,7 +48,9 @@ public class ChauffeurService {
         }
     }
 
-
+    /**
+     * Loads the chauffeur data from the file
+     */
     public void loadChauffeurData() {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;

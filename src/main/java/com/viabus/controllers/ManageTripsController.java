@@ -75,6 +75,9 @@ public class ManageTripsController {
         }
     }
 
+    /**
+     * Called when the user clicks the edit button. Opens a dialog to edit
+     */
     @FXML
     private void handleEditTripButton(){
         // Get the selected trip from the table view

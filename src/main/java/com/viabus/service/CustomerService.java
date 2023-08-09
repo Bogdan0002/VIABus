@@ -31,6 +31,9 @@ public class CustomerService {
         saveCustomerData();
     }
 
+    /**
+     * This method is used to save the customer data to the file.
+     */
     public void saveCustomerData() {
         try { PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(filePath, false)));
             for (Customer customer : customerData) {
@@ -42,6 +45,9 @@ public class CustomerService {
         }
     }
 
+    /**
+     * This method is used to load the customer data from the file.
+     */
     public void loadCustomerData(){
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -73,6 +79,10 @@ public class CustomerService {
         this.customerData = new ArrayList<>(updatedCustomerData);
     }
 
+    /**
+     * This method is used to get all the customers.
+     * @return
+     */
     public List<Customer> getAll() {
         return new ArrayList<>(customerData);
     }

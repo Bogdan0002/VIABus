@@ -20,7 +20,7 @@ public class CreateReservationViewHandler {
             Parent root = loader.load();
 
             CreateReservationController controller = loader.getController();
-            controller.setReservationData(reservationData);
+         //   controller.setReservationData(reservationData);
 
 
             // Print reservationService to check if it is null

@@ -81,6 +81,9 @@ public class ManageChauffeursController {
         }
     }
 
+    /**
+     * Called when the user clicks the edit button. Opens a dialog to edit
+     */
     @FXML
     private void handleEditChauffeurButton(){
         // Get the selected chauffeur from the table view

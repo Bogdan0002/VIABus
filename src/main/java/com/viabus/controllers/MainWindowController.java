@@ -90,6 +90,9 @@ public class MainWindowController {
         }
     }
 
+    /**
+     * Called when the user clicks the edit button. Opens a dialog to edit
+     */
     @FXML
     private void handleEditReservationButton() {
         // Get the selected reservation from the table view

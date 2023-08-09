@@ -81,6 +81,9 @@ public class ManageCustomersController {
         }
     }
 
+    /**
+     * Called when the user clicks the edit button. Opens a dialog to edit
+     */
     @FXML
     private void handleEditCustomerButton(){
         // Get the selected customer from the table view

@@ -39,7 +39,10 @@ public class CreateReservationController {
     private ChauffeurService chauffeurService;
     private BusService busService;
 
-
+    /**
+     * This method takes care of the file path for the reservation file.
+     * @return
+     */
     private String fileManager(){
         String folderPath = System.getProperty("user.dir") + File.separator + "files";
         String fileName = "Reservations.txt";
@@ -48,6 +51,7 @@ public class CreateReservationController {
 
     public CreateReservationController() {
     }
+
 
     @FXML
     public void initialize() {
@@ -60,7 +64,9 @@ public class CreateReservationController {
         // reservationData and ComboBox population will be handled in setReservationService
     }
 
-
+    /**
+     * Populates the ComboBoxes with the data from the services when creating a new reservation.
+     */
     private void populateComboBoxes() {
         List<Trip> tripList = tripService.getAll();
         ObservableList<Trip> tripObservableList = FXCollections.observableArrayList(tripList);
@@ -83,6 +89,9 @@ public class CreateReservationController {
         this.reservationData = reservationData;
     }
 
+    /**
+     * Saves the Reservation after the 'Save' button is clicked. It also validates the input. If the input is valid, it will add the reservation to the list of reservations.
+     */
     @FXML
     private void handleSaveReservationButton() {
         try {
@@ -158,7 +167,10 @@ public class CreateReservationController {
         }
     }
 
-
+    /**
+     * This method displays an error message to the user when the input is invalid
+     * @param errorMessage to be displayed to the user when the input is invalid.
+     */
     private void showError(String errorMessage) {
         errorLabel.setText(errorMessage);
         errorLabel.setVisible(true);
@@ -184,6 +196,10 @@ public class CreateReservationController {
     }
 
 
+    /**
+     * This method displays a message to the user when the object is added successfully
+     * @param infoMessage to be displayed to the user when the object is added successfully.
+     */
     private void infoSaved(String infoMessage) {
         infoSaved.setText(infoMessage);
         infoSaved.setVisible(true);

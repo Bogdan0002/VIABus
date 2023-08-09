@@ -25,7 +25,11 @@ public class BusService {
             return busData;
         }
 
-        public void loadBusData() {
+    /**
+     * Adds a bus to the busData list
+     */
+
+    public void loadBusData() {
             try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
                 String line;
                 while ((line = br.readLine()) != null) {
@@ -45,6 +49,9 @@ public class BusService {
             }
         }
 
+    /**
+     * Saves the bus data to the file
+     */
         public  void saveBusData() {
             try { PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(filePath, false)));
                 for (Bus bus : busData) {

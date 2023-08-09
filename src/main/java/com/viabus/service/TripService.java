@@ -31,6 +31,11 @@ public class TripService {
             saveTripData();
         }
 
+    /**
+     * Singleton pattern
+     * @param filePath
+     * @return
+     */
     public static TripService getInstance(String filePath) {
         if (instance == null) {
             instance = new TripService(filePath);
@@ -38,7 +43,10 @@ public class TripService {
         return instance;
     }
 
-        public void saveTripData(){
+    /**
+     * Saves the trip data to the file
+     */
+    public void saveTripData(){
             try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(filePath, false)))) {
                 for (Trip trip : tripData) {
                     String lineToAdd = trip.getId() + "," + trip.getDestination() + "," + trip.getDeparture() + "," + trip.getDuration();
@@ -49,7 +57,10 @@ public class TripService {
             }
         }
 
-        public void loadTripData(){
+    /**
+     * Loads the trip data from the file to the tripData list
+     */
+    public void loadTripData(){
 
             try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
                 String line;
@@ -71,6 +82,10 @@ public class TripService {
 
         }
 
+    /**
+     * Updates the trip data
+     * @param updatedTripData
+     */
         public void updateTripData(ObservableList<Trip> updatedTripData) {
             this.tripData = new ArrayList<>(updatedTripData);
         }
@@ -86,6 +101,10 @@ public class TripService {
         throw new NoSuchElementException("No trip with id " + tripId + " found");
     }
 
+    /**
+     * Returns all the trips
+     * @return
+     */
     public List<Trip> getAll() {
         return new ArrayList<>(tripData);
     }
